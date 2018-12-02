@@ -10,6 +10,7 @@
 #define PARTICLE_FILTER_H_
 
 #include "helper_functions.h"
+#include <random>
 
 struct Particle {
   int id;
@@ -74,7 +75,7 @@ public:
    * @param predicted Vector of predicted landmark observations
    * @param observations Vector of landmark observations
    */
-  void dataAssociation(std::vector<LandmarkObs> predicted, std::vector<LandmarkObs>& observations);
+  void dataAssociation(std::map<int,LandmarkObs> predicted, std::vector<LandmarkObs>& observations);
 	
   /**
    * updateWeights Updates the weights for each particle based on the likelihood of the 
@@ -111,6 +112,9 @@ public:
   const bool initialized() const {
     return is_initialized;
   }
+
+private:
+  std::default_random_engine random_engine;
 };
 
 #endif /* PARTICLE_FILTER_H_ */
