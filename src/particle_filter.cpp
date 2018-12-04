@@ -123,8 +123,9 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 
       LandmarkObs predicted_observation;
       predicted_observation.id = landmark.id_i;
-      predicted_observation.x = cos(-particle.theta)*landmark.x_f - sin(-particle.theta)*landmark.y_f - particle.x*cos(particle.theta) - particle.y*sin(particle.theta);
-      predicted_observation.y = sin(-particle.theta)*landmark.x_f + cos(-particle.theta)*landmark.y_f - particle.y*cos(particle.theta) + particle.x*sin(particle.theta);
+      double cos_theta = cos(particle.theta), sin_theta = sin(particle.theta);
+      predicted_observation.x = cos_theta*landmark.x_f + sin_theta*landmark.y_f - particle.x*cos_theta - particle.y*sin_theta;
+      predicted_observation.y = -sin_theta*landmark.x_f + cos_theta*landmark.y_f - particle.y*cos_theta + particle.x*sin_theta;
       predicted_observations.emplace(landmark.id_i,predicted_observation);
     }
     dataAssociation(predicted_observations, particle_observations);
