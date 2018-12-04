@@ -29,8 +29,8 @@ void ParticleFilter::init(double x, double y, double theta, double std[])
   num_particles = 1000;
 
   normal_distribution<double> rand_generator_x(x,std[0]);
-  normal_distribution<double> rand_generator_y(x,std[1]);
-  normal_distribution<double> rand_generator_theta(x,std[2]);
+  normal_distribution<double> rand_generator_y(y,std[1]);
+  normal_distribution<double> rand_generator_theta(theta,std[2]);
 
   for (int id=0; id<num_particles; ++id) {
     struct Particle particle;
@@ -56,7 +56,7 @@ void ParticleFilter::prediction(double delta_t, double std_pos[], double velocit
   for (auto& particle : particles) {
     double theta_prev = particle.theta;
     double theta_next = theta_prev + yaw_rate * delta_t;
-    if (yaw_rate < 0.1) {
+    if (yaw_rate < 0.1 && yaw_rate > -0.1) {
       particle.x += velocity*delta_t*cos(theta_prev);
       particle.y += velocity*delta_t*sin(theta_prev);
     } else {
